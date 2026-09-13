@@ -1,0 +1,112 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TITLES — 4 tipos de chamada (TT1-TT4) que aparecem nos primeiros 5s
+   Versão @luiscortex (substitui o preview.html original do user)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.title-overlay {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+/* ───── TT1 — TORN PAPER (estilo Cindie/Hand-drawn — papel rasgado) ─────
+   Inspirado no "anything" do user, com NOSSAS cores. */
+.title-tt1 {
+  display: inline-block;
+  background: var(--white-100);
+  color: var(--navy-200);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 36px;
+  padding: 10px 22px 8px;
+  position: relative;
+  /* Bordas rasgadas via clip-path */
+  clip-path: polygon(
+    0% 8%, 4% 0%, 12% 6%, 22% 0%, 34% 4%, 48% 0%, 60% 6%, 72% 0%,
+    84% 4%, 94% 0%, 100% 8%, 98% 18%, 100% 30%, 96% 42%, 100% 56%,
+    98% 70%, 100% 84%, 96% 94%, 88% 100%, 76% 96%, 64% 100%, 52% 96%,
+    40% 100%, 28% 96%, 16% 100%, 6% 96%, 0% 92%, 4% 78%, 0% 64%,
+    2% 48%, 0% 34%, 4% 20%
+  );
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+  text-transform: lowercase;
+}
+
+/* ───── TT2 — BOLD BLOCK (estilo Stepped Tutorial — caixa sólida orange) ─────
+   "Step 1" / "Passo 2" / "01" — chamada de etapa */
+.title-tt2 {
+  display: inline-block;
+  background: var(--orange);
+  color: var(--white-100);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 28px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 6px 0 var(--orange-d), 0 12px 24px rgba(0, 0, 0, 0.4);
+  transform: rotate(-1deg);
+}
+
+/* ───── TT3 — MONO TECHNICAL (estilo dev console — JetBrains Mono) ─────
+   Pra quando o título é técnico ("MCP Server", "claude.ai/api") */
+.title-tt3 {
+  display: inline-block;
+  background: var(--navy-100);
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 22px;
+  padding: 12px 18px;
+  border: 1px solid var(--cyan);
+  border-radius: 4px;
+  text-transform: lowercase;
+  letter-spacing: 0;
+  box-shadow: var(--shadow-cyan);
+}
+.title-tt3::before {
+  content: '> ';
+  color: var(--orange);
+  font-weight: 700;
+}
+
+/* ───── TT4 — SERIF EDITORIAL (estilo Premium Cinematic — Instrument Serif) ─────
+   Frase poética, palavra-chave em destaque */
+.title-tt4 {
+  display: inline-block;
+  font-family: var(--font-italic);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 44px;
+  color: var(--white-100);
+  line-height: 1.1;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+  max-width: 90%;
+}
+.title-tt4 .accent {
+  color: var(--orange);
+  font-style: italic;
+  display: block;
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   TAMANHOS — 4 níveis (preserva proporções do preview.html do user)
+   Aplicar como modificador: .title-tt1.size-3 etc
+   ═══════════════════════════════════════════════════════════════════ */
+.size-1 { font-size: var(--tt-size-1) !important; }
+.size-2 { font-size: var(--tt-size-2) !important; }
+.size-3 { font-size: var(--tt-size-3) !important; }
+.size-4 { font-size: var(--tt-size-4) !important; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   CASES — 3 estilos de capitalização
+   ═══════════════════════════════════════════════════════════════════ */
+.case-upper { text-transform: uppercase !important; letter-spacing: 1px; }
+.case-normal { text-transform: none !important; }
+.case-lower { text-transform: lowercase !important; }

@@ -1,0 +1,64 @@
+/* ═══════════════════════════════════════════════════════════════════
+   TOKENS — fonte da verdade do Video Design System @luiscortex
+   Sincronizado com ~/Documents/luiscortex/luiscortex_project/DESIGN_SYSTEM.md
+   ═══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  /* ───── PALETA — Premium CEO Blue Tech (DESIGN_SYSTEM v1.0) ───── */
+  --navy-100:  #0A1628;   /* deep — backgrounds tipo "darker" */
+  --navy-200:  #0F1F3A;   /* DOMINANTE — 60% dos backgrounds */
+  --navy-300:  #1A2B4A;   /* mid */
+  --navy-400:  #243B5F;   /* mid-light pra cards/glass */
+  --navy-line: #2A3F5F;   /* borders sutis */
+
+  --white-100: #F8FAFC;   /* off-white tech (NÃO cream) */
+  --white-200: #ECF0F4;
+  --white-300: #D1D9E0;
+
+  --orange:    #DA7756;   /* Anthropic warm — accent ÚNICO 10% */
+  --orange-d:  #B85B3D;
+  --orange-l:  #ECA388;
+
+  --cyan:      #5DE8FF;   /* APENAS code/labels técnicos */
+  --cyan-d:    #00B8D4;
+
+  --ink:       #1F2937;
+  --muted:     #64748B;
+
+  /* ───── TIPOGRAFIA ───── */
+  --font-display: 'Plus Jakarta Sans', sans-serif;   /* heading 800 */
+  --font-italic:  'Instrument Serif', serif;         /* accent italic */
+  --font-mono:    'JetBrains Mono', monospace;       /* code/labels */
+
+  /* Tamanhos no card 9:16 (max-width ~280px) */
+  --tt-size-1: 26px;    /* small */
+  --tt-size-2: 30px;    /* default */
+  --tt-size-3: 34px;    /* large */
+  --tt-size-4: 42px;    /* xlarge */
+
+  /* ───── MOTION ───── */
+  --ease-out-soft:   cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-in-out:     cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:    180ms;
+  --dur-base:    320ms;
+  --dur-slow:    640ms;
+  --dur-cinematic: 900ms;
+
+  /* ───── DEPTH ───── */
+  --shadow-card:   0 24px 64px -16px rgba(0, 0, 0, 0.6),
+                   0 0 0 1px rgba(218, 119, 86, 0.04);
+  --shadow-glow:   0 0 32px rgba(218, 119, 86, 0.25);
+  --shadow-cyan:   0 0 24px rgba(93, 232, 255, 0.4);
+}
+
+/* ───── REGRAS DE USO (anotadas pra não esquecer) ─────
+   • navy-200 é DOMINANTE (60% bg)
+   • orange é accent ÚNICO (10% pixels — destaque, nunca fundo grande)
+   • cyan é uso técnico (apenas <code>, .label-tech, glow ocasional)
+   • white-100 é off-white frio (nunca pure white nem cream)
+   • Letter-spacing -0.5px em headings grandes
+   • NUNCA Inter/Roboto/Arial/Times como fonte principal
+   ─────────────────────────────────────────────────── */

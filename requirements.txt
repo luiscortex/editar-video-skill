@@ -1,0 +1,10 @@
+# Skill /editar-video — crie um venv qualquer (ex: python3 -m venv venv) e ative antes de instalar
+# Versões pinadas em 2026-05-10 (validadas em Python 3.13.5)
+faster-whisper==1.2.1
+mediapipe==0.10.35
+opencv-contrib-python==4.13.0.92
+playwright==1.59.1
+# SVG → PNG conversion (asset_resolver logos)
+cairosvg==2.9.0
+cairocffi==1.7.1
+# ffmpeg/yt-dlp via brew (system)

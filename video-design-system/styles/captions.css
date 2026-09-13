@@ -1,0 +1,97 @@
+/* ═══════════════════════════════════════════════════════════════════
+   CAPTIONS — 3 estilos de legenda (.cap-clean / .cap-boxed / .cap-serif)
+   Cada estilo tem 3 cases (UPPER/normal/lowercase) e 4 sizes
+   ═══════════════════════════════════════════════════════════════════ */
+
+.subtitle {
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 18%;
+  text-align: center;
+  padding: 0 16px;
+  z-index: 4;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+}
+
+/* ───── ESTILO A: CLEAN (Hand-drawn / Premium) ─────
+   Branco grande, sem caixa, sombra sutil pra legibilidade */
+.cap-clean {
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--white-100);
+  font-size: var(--tt-size-2);
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 24px rgba(0, 0, 0, 0.4);
+}
+
+/* ───── ESTILO B: BOXED (Stepped Tutorial) ─────
+   Palavra com caixa colorida — orange ou cyan dependendo do contexto */
+.cap-boxed {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--tt-size-2);
+  color: var(--white-100);
+}
+.cap-boxed .word {
+  display: inline-block;
+  padding: 2px 10px;
+  margin: 0 2px;
+  background: var(--navy-200);
+  border-radius: 6px;
+}
+.cap-boxed .word.is-highlight {
+  background: var(--orange);
+  color: var(--white-100);
+  position: relative;
+  overflow: hidden;
+}
+.cap-boxed .word.is-highlight::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: var(--orange);
+  transform-origin: left;
+  animation: highlight-bg-slide 320ms var(--ease-out-soft) backwards;
+  z-index: -1;
+}
+.cap-boxed .word.is-tech {
+  background: var(--navy-100);
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  border: 1px solid var(--cyan-d);
+}
+
+/* ───── ESTILO C: SERIF (Premium Cinematic / Split) ─────
+   Instrument Serif italic — palavra-chave em orange, resto branco */
+.cap-serif {
+  font-family: var(--font-italic);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--white-100);
+  font-size: 38px;
+  line-height: 1.1;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+.cap-serif .accent {
+  color: var(--orange);
+  font-style: italic;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   WORD-BY-WORD STAGGER (palavras aparecem em sequência)
+   Aplicar via JS ou por demo: stagger automático nos primeiros 6 .word
+   ═══════════════════════════════════════════════════════════════════ */
+.cap-stagger .word {
+  display: inline-block;
+  animation: word-reveal 380ms var(--ease-out-soft) backwards;
+}
+.cap-stagger .word:nth-child(1) { animation-delay: 0ms; }
+.cap-stagger .word:nth-child(2) { animation-delay: 80ms; }
+.cap-stagger .word:nth-child(3) { animation-delay: 160ms; }
+.cap-stagger .word:nth-child(4) { animation-delay: 240ms; }
+.cap-stagger .word:nth-child(5) { animation-delay: 320ms; }
+.cap-stagger .word:nth-child(6) { animation-delay: 400ms; }
+.cap-stagger .word:nth-child(7) { animation-delay: 480ms; }
+.cap-stagger .word:nth-child(8) { animation-delay: 560ms; }

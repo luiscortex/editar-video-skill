@@ -1,0 +1,152 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ANIMATIONS — biblioteca CSS-only de motion (HyperFrames-style)
+   Todas reusáveis. Cada animação tem 1 responsabilidade.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ───── 01. TORN PAPER — entrada de label rasgado ───── */
+@keyframes torn-paper-in {
+  0%   { opacity: 0; transform: translateY(-12px) rotate(-4deg) scale(0.85); }
+  60%  { opacity: 1; transform: translateY(2px) rotate(2deg) scale(1.05); }
+  100% { opacity: 1; transform: translateY(0) rotate(-1.5deg) scale(1); }
+}
+
+/* ───── 02. TORN PAPER SWING — balanço perpétuo ───── */
+@keyframes torn-paper-swing {
+  0%, 100% { transform: rotate(-1.5deg); }
+  50%      { transform: rotate(1.5deg); }
+}
+
+/* ───── 03. WORD-BY-WORD REVEAL — clip-path stagger ───── */
+@keyframes word-reveal {
+  0%   { clip-path: inset(0 100% 0 0); transform: translateY(4px) scale(0.92); }
+  60%  { transform: translateY(-2px) scale(1.04); }
+  100% { clip-path: inset(0 0 0 0);  transform: translateY(0) scale(1); }
+}
+
+/* ───── 04. HIGHLIGHT BG SLIDE — caixa entra atrás da palavra ───── */
+@keyframes highlight-bg-slide {
+  0%   { transform: scaleX(0); transform-origin: left; }
+  100% { transform: scaleX(1); transform-origin: left; }
+}
+
+/* ───── 05. STEP NUMBER — número grande rotacionando ───── */
+@keyframes step-number-in {
+  0%   { opacity: 0; transform: rotate(-180deg) scale(0.5); }
+  60%  { opacity: 1; transform: rotate(20deg) scale(1.15); }
+  100% { opacity: 1; transform: rotate(0) scale(1); }
+}
+
+/* ───── 06. KEN BURNS — zoom lento contínuo ───── */
+@keyframes ken-burns {
+  0%   { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.12) translate(-2%, -3%); }
+}
+
+/* ───── 07. MASCOTE SLIDE-IN com bounce ───── */
+@keyframes mascot-slide-in {
+  0%   { opacity: 0; transform: translateX(80%) rotate(-8deg); }
+  70%  { opacity: 1; transform: translateX(-8%) rotate(2deg); }
+  100% { opacity: 1; transform: translateX(0) rotate(0); }
+}
+
+/* ───── 08. SLIDE UP + BOUNCE (caixas Stepped) ───── */
+@keyframes slide-up-bounce {
+  0%   { opacity: 0; transform: translateY(40px) scale(0.95); }
+  60%  { opacity: 1; transform: translateY(-6px) scale(1.02); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ───── 09. STROKE DRAW (doodle hand-drawn) ───── */
+@keyframes stroke-draw {
+  0%   { stroke-dashoffset: var(--draw-len, 100); }
+  100% { stroke-dashoffset: 0; }
+}
+
+/* ───── 10. MOTION BLUR FADE (transição cinematic) ───── */
+@keyframes motion-blur-fade {
+  0%   { opacity: 0; filter: blur(20px); transform: scale(1.05); }
+  100% { opacity: 1; filter: blur(0); transform: scale(1); }
+}
+
+/* ───── 11. CROSSFADE LONGO (premium cinematic) ───── */
+@keyframes crossfade-slow {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ───── 12. SHIMMER (B-roll placeholder) ───── */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ───── 13. PARTÍCULAS FLOAT (Premium Cinematic bg) ───── */
+@keyframes particles-float {
+  0%   { transform: translateY(100%) translateX(0); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-100%) translateX(20px); opacity: 0; }
+}
+
+/* ───── 14. PULSE GLOW (cyan code label) ───── */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(93, 232, 255, 0.3); }
+  50%      { box-shadow: 0 0 24px rgba(93, 232, 255, 0.6); }
+}
+
+/* ───── 15. CURSOR HALO (catalog interactive) ───── */
+@keyframes cursor-halo {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50%      { transform: scale(1.3); opacity: 0.6; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Classes utilitárias — aplicar diretamente em elementos
+   ═══════════════════════════════════════════════════════════════════ */
+
+.anim-torn-paper {
+  animation: torn-paper-in 600ms var(--ease-out-bounce) forwards,
+             torn-paper-swing 3.2s var(--ease-in-out) infinite alternate 600ms;
+}
+
+.anim-word-reveal {
+  animation: word-reveal 420ms var(--ease-out-soft) backwards;
+}
+
+.anim-step-number {
+  animation: step-number-in 700ms var(--ease-out-bounce) backwards;
+}
+
+.anim-ken-burns {
+  animation: ken-burns 8s linear infinite alternate;
+}
+
+.anim-mascot-slide {
+  animation: mascot-slide-in 700ms var(--ease-out-bounce) backwards;
+}
+
+.anim-slide-up {
+  animation: slide-up-bounce 540ms var(--ease-out-bounce) backwards;
+}
+
+.anim-blur-fade {
+  animation: motion-blur-fade 700ms var(--ease-out-soft) backwards;
+}
+
+.anim-crossfade {
+  animation: crossfade-slow 900ms var(--ease-out-soft) backwards;
+}
+
+.anim-pulse-glow {
+  animation: pulse-glow 2.4s var(--ease-in-out) infinite;
+}
+
+/* ───── REDUCED MOTION ─────
+   Quem tem prefers-reduced-motion vê o estado final sem animação */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
