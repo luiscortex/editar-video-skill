@@ -394,7 +394,7 @@ def build_shot_list(
     estilo = config.get("estilo", "04-premium-cinematic")
 
     if bank_root is None:
-        bank_root = Path.home() / "Documents/luiscortex/asset-bank"
+        bank_root = Path.home() / ".editar-video/asset-bank"
 
     resolver = AssetResolver(bank_root=bank_root)
 

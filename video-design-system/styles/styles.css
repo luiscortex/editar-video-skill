@@ -62,7 +62,7 @@
   border-radius: 12px;
 }
 
-/* Watermark @luiscortex */
+/* Watermark (handle configurável) */
 .frame .watermark {
   position: absolute;
   bottom: 14px; left: 14px;

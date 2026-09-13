@@ -1,9 +1,9 @@
 ---
 name: editar-video
-description: "Use ESTA skill quando o user @luiscortex pedir para EDITAR vídeo gravado em Reel/Short/YT. Também usar quando mencionar 'edita esse vídeo', 'corta silêncios desse bruto', 'monta um reel desse vídeo', 'analisa esse vídeo pra cortar', 'faz cleanup desse vídeo de terceiro', 'edita o YT longo'. NÃO usar essa skill pra criar carrossel ou roteiro do zero (use /gerar-conteudo). Esta skill cobre o fluxo VÍDEO BRUTO → vídeo editado final."
+description: "Use ESTA skill quando o usuário pedir para EDITAR vídeo gravado em Reel/Short/YT. Também usar quando mencionar 'edita esse vídeo', 'corta silêncios desse bruto', 'monta um reel desse vídeo', 'analisa esse vídeo pra cortar', 'faz cleanup desse vídeo de terceiro', 'edita o YT longo'. NÃO usar essa skill pra criar carrossel ou roteiro do zero. Esta skill cobre o fluxo VÍDEO BRUTO → vídeo editado final."
 metadata:
   version: 2.2.2
-  audience: "@luiscortex (CEO operador · Marketing · Conteúdo)"
+  audience: "criadores de conteúdo em vídeo (Reels/Shorts)"
   output_formats: [reels-9x16-180s]
   resolutions: [1080x1920]
   estilo_default: 04-premium-cinematic
@@ -11,22 +11,20 @@ metadata:
   workflow: "v2.1 — 6 etapas + 5 gates (gate 1 = transcript, gate 2 = plano)"
 ---
 
-# /editar-video — Estúdio de Gravação e Edição de Vídeo @luiscortex
+# /editar-video — Estúdio de Gravação e Edição de Vídeo
 
 Orquestrador que transforma **vídeo bruto** em **Reel/Short/YT editado** com workflow conversacional em 6 etapas + 5 gates de aprovação explícitos.
 
-**Fonte da verdade do workflow:** `~/Documents/luiscortex/copy-styles/_base/fluxo-edicao-video-2026.md` (consultar SEMPRE antes de iniciar qualquer edição — contém o desenho completo das 6 etapas, 5 gates, Production Safety Net e regras técnicas: split 60/40, safe zone IG 280px, suppressão de legenda em título/CTA, etc).
+As 6 etapas, os 5 gates, o Production Safety Net e as regras técnicas (split 60/40, safe zone IG 280px, suppressão de legenda em título/CTA etc.) estão todos documentados neste arquivo, mais abaixo. Internamente o autor mantém uma versão estendida dessas regras num arquivo pessoal de estilo — opcional, não é necessária pra rodar a skill.
 
 Bases consultadas internamente:
-1. Marketing Skills (frameworks de copy quando há output IG)
-2. Copy Style System @luiscortex (tom + proibições + presets — reuso `/gerar-conteudo`)
-3. Video Design System (4 estilos visuais + Clawd + 3 estilos de caption)
-   - Catálogo visual cravado: `~/Documents/luiscortex/copy-styles/_base/regras-edicao-video-2026.md` → seção "🎨 Catálogo Visual @luiscortex"
-   - Preview HTML: `~/Documents/luiscortex/video-design-system/index.html`
-   - CSS modulares (5 files): `~/Documents/luiscortex/video-design-system/styles/{tokens,animations,titles,captions,styles}.css`
+1. Frameworks de copy (quando há output pra Instagram) — opcional, arquivo pessoal do autor
+2. Copy Style System pessoal (tom de voz + proibições + presets) — opcional, arquivo pessoal do autor
+3. Video Design System (4 estilos visuais + mascote Clawd + 3 estilos de caption)
+   - CSS modulares (bundlados nesta skill): `video-design-system/styles/{tokens,animations,titles,captions,styles}.css`
 4. Library cache estilo claude-watch (re-runs instantâneos)
 
-Saída em `~/Documents/luiscortex/edicoes/<slug>/output/`:
+Saída em `edicoes/<slug>/output/` (relativo à pasta onde você rodar a skill):
 - `final.mp4` (1080×1920)
 - `meta.json`, `shot_list.json`, `workflow_state.json`
 - `transcript-revisao.md` (Gate 1 — entrada) / `transcript-corrigido.json` (Gate 1 — saída)
@@ -40,21 +38,10 @@ Saída em `~/Documents/luiscortex/edicoes/<slug>/output/`:
 
 ## 🔗 Onde esta skill entra no fluxo
 
-**Mapa completo:** `~/Documents/luiscortex/FLUXO-SKILLS.md`
-
-Recebe: `bruto.mp4` (gravado a partir do roteiro do `/gerar-conteudo`).
+Recebe: `bruto.mp4` (o vídeo gravado, com ou sem roteiro prévio).
 Entrega: MP4 final renderizado.
 
-Passa a bola pra:
-
-| Situação | Vá pra | Porquê |
-|---|---|---|
-| precisa de insert e você vai abrir o Final Cut | `/inserts-xml` | monta o `.fcpxmld` com os inserts já no tempo certo |
-| precisa de insert e você edita em DaVinci/Premiere | `/animar-card` | entrega MP4 + PNG RGBA soltos |
-| vídeo pronto, antes de publicar | `/score-viral` | tria a peça |
-
-**A regra pra escolher entre as três que fazem insert:** vai abrir o Final Cut
-→ `/inserts-xml`. Outro editor → `/animar-card`. Nenhum editor → fica aqui.
+O autor mantém skills complementares próprias pra etapas vizinhas (gerar roteiro antes de gravar, montar inserts num editor externo depois, triar antes de publicar). Nenhuma delas vem neste repositório nem é necessária — sozinha, esta skill já cobre o fluxo completo de vídeo bruto até vídeo editado.
 
 ---
 
@@ -122,7 +109,7 @@ Valores válidos pro campo `layout` (em `style_config.json` global OU em cada in
 
 **Caption position** é DERIVADA do layout (default acima), mas user pode override em `style_config.json` com `caption_position: "top"` ou `"bottom"`.
 
-**Specs técnicas detalhadas** dos cards overlay (rounded corners, padding, max-width, face-aware): ver `~/Documents/luiscortex/copy-styles/_base/regras-edicao-video-2026.md` → seção "9 layouts de insert".
+**Specs técnicas detalhadas** dos cards overlay (rounded corners, padding, max-width, face-aware) estão na tabela acima e implementadas em `orchestrator.py` — não dependem de nenhum arquivo externo.
 
 > **REGRA CRAVADA (2026-05-18 — sessão de testes):** quando o user escolher layout 1a (`overlay-fullframe`) em vídeos de **talking head**, o card de cada insert usa `overlay-bottom-card` com **y_default = 900px** (torso). NÃO usar `overlay-top-card` em talking head — parece amador. Card width = **1040px**, rounded r=26, sombra blur=16 opacity=110.
 
@@ -216,7 +203,7 @@ A skill **não executa ação** sem o user responder no chat. Sem ambiguidade.
    Princípio: a parte MECÂNICA é regex/match (script Python). A parte CONTEXTUAL é Claude pensando em cada vídeo a partir do texto correto — sem hardcode de frases, sem overfitting.
 2. **Gate 2 — Plano-Inserts**: mostra `plano-inserts.html` com cards de cada insert (timestamp, tipo, asset proposto, source). User aprova lista ANTES de qualquer composição. Aprovar dispara automaticamente `compor-master`.
 
-   **CACHE CROSS-SKILL (Plataforma Editorial Loop Feedback):** ANTES de propor inserts, Claude consulta `~/Documents/luiscortex/cache-cross/inserts-validados.json`. Inserts que viralizaram em vídeos meus passados (HIT no Loop Feedback) têm confidence > 0.5. Quando padrão tem confidence ≥ 0.70 e match com transcript atual (tipo+contexto), priorizar reuso desse insert. Pra cada padrão usado, registrar em `historico/<slug>/inserts_aplicados.json` pra fechar o loop. Sistema novo (cache vazio): seguir caminho contextual normal.
+   **CACHE CROSS-SKILL (opcional):** se você mantiver um histórico de quais inserts funcionaram melhor em vídeos anteriores, a skill pode consultar `cache-cross/inserts-validados.json` antes de propor inserts novos — padrões com confidence ≥ 0.70 e match de tipo/contexto com o transcript atual são reaproveitados; cada uso é registrado em `historico/<slug>/inserts_aplicados.json` pra fechar o loop. Sem esse arquivo (caso mais comum), a skill segue direto pro caminho contextual normal.
 3. **Gate 3 — Master**: mostra `master.mp4` (cuts base + inserts ui-mock **animados MP4** compostos no split definido, sem legenda nem título ainda). Mocks são renderizados via `animate_mock.py` (Playwright video recording de CSS animations → WebM → MP4). talking_head_mode=live = gaps entre inserts mostram a pessoa gravada falando ao vivo (não frame congelado). User aprova composição visual. Aprovar dispara automaticamente `aplicar-legenda`.
 4. **Gate 4 — Legenda**: mostra `master-legendado.mp4` com legenda A burned-in + títulos TT1-TT4 + CTA. Legenda MUTADA automaticamente via `--suppress-intervals` quando título/CTA visível (v2.1: implementado). User valida safe zone (MarginV ≥ 280px, recomendado 320px).
 5. **Gate 5 — Acelerar**: pergunta multiplicador final (1.0 / 1.1 / 1.15 / 1.2 / 1.25 / 1.3). Renderiza `final.mp4` com loudness target -14 LUFS.
@@ -272,7 +259,7 @@ Resultados gravados em `quality_report.json`. Reportados ao user no gate só se 
 - **Face-aware**: nunca cobre rosto detectado. Sobe ou desce respeitando safe zone.
 - **Suppression intervals**: `adicionar_legenda` aceita `--suppress-intervals "0-3.5,50-54"` pra blackout em hook/CTA.
 
-Detalhe completo em `~/Documents/luiscortex/copy-styles/_base/fluxo-edicao-video-2026.md`.
+Detalhe completo nas seções acima deste mesmo arquivo.
 
 ---
 
@@ -282,7 +269,7 @@ Detalhe completo em `~/Documents/luiscortex/copy-styles/_base/fluxo-edicao-video
 2. **Estilo + layout padrão são cravados em `style_config.json`** — todas etapas downstream lêem. Cada insert pode override próprio `layout` em `inserts_manuais.json`.
 3. **Library cache obrigatório** — re-runs reusam transcript/scenes/face_zones.
 4. **Pasta de input "1 pasta com tudo"** — `ls`, descobre, só pergunta o que faltou.
-5. **Output só em `~/Documents/luiscortex/edicoes/<slug>/`** — nunca polui pasta input.
+5. **Output só em `edicoes/<slug>/`** (relativo à pasta onde a skill roda) — nunca polui pasta input.
 6. **5 gates explícitos PARAM a skill** — não executa sem resposta no chat.
 7. **Self-review antes de cada gate** — `open` o output, lê frames, conserta se errado.
 8. **NUNCA burna legenda direto do Whisper sem Gate 1** — revisão de transcript é obrigatória.
@@ -329,36 +316,34 @@ Detalhe completo em `~/Documents/luiscortex/copy-styles/_base/fluxo-edicao-video
 
 ---
 
-## 🔌 Integração com outras skills
+## 🔌 Integração com outras skills (opcional)
 
-- **`/gerar-conteudo`** — invocada em Modo 5 do fluxo legado v1 (atalho roteiro reel)
-- **`image-fetcher`** (standalone) — usada em `/asset-resolver` pra buscar inserts visuais
-- **`image-ai-generator`** (standalone) — B-roll generativo quando asset não existe
+O autor também usa skills próprias complementares — pra gerar o roteiro antes de gravar, buscar imagens de referência e gerar B-roll quando falta asset. Nenhuma delas vem neste repositório nem é obrigatória: sem elas, a skill usa os caminhos padrão descritos nas seções acima.
 
 ---
 
 ## 💾 Storage & Cache
 
-Quatro paths persistentes que a skill usa pra runtime + library cache. Library cache invalida só o que mudou (estilo claude-watch).
+Quatro pastas (relativas a onde você roda a skill) usadas pra runtime + library cache. Library cache invalida só o que mudou (estilo claude-watch).
 
-| Path | Função |
+| Pasta | Função |
 |---|---|
-| `~/Documents/luiscortex/roteiros-video/R###-<data>-<slug>/` | Banco de roteiros (rascunho/aprovado/gravado/editado/publicado) |
-| `~/Documents/luiscortex/edicoes/<YYYY-MM-DD>-<slug>-<sha4>/` | Library cache de edições (transcript + scenes + face_zones + analysis + shot_list) |
-| `~/Documents/luiscortex/edicoes-styles/estilos/<estilo>/padroes.md` | Aprendizado por estilo (sem cross-contamination entre estilos) |
-| `~/Documents/luiscortex/asset-bank/` | Banco local de assets (photos, videos, sfx, music-beds) |
+| `roteiros-video/R###-<data>-<slug>/` | Banco de roteiros (rascunho/aprovado/gravado/editado/publicado), se você organizar roteiros assim |
+| `edicoes/<YYYY-MM-DD>-<slug>-<sha4>/` | Library cache de edições (transcript + scenes + face_zones + analysis + shot_list) |
+| `edicoes-styles/estilos/<estilo>/padroes.md` | Aprendizado por estilo (sem cross-contamination entre estilos) |
+| `asset-bank/` | Banco local de assets (photos, videos, sfx, music-beds), se você mantiver um |
 
-**Regra:** skill SEMPRE escreve outputs em `~/Documents/luiscortex/edicoes/<slug>/` — nunca polui pasta de input.
+**Regra:** skill SEMPRE escreve outputs em `edicoes/<slug>/` — nunca polui pasta de input.
 
 ---
 
 ## 📝 Versionamento
 
 **v2.2.2** (2026-09-13) — portabilidade (pré-requisito pro repo público/tutorial):
-- 3 caminhos absolutos fixos no usuário (`/Users/luisguimaraes/...`) trocados por resolução portátil: `animar_titulo.py`, `render_mock.py` e `animate_mock.py` agora usam `video-design-system/` bundlado dentro da própria skill como default, com override via env var `EDITAR_VIDEO_DS_DIR` (uso local: aponta pra fonte viva em `~/Documents/luiscortex/video-design-system`)
+- 3 caminhos absolutos fixos no usuário original trocados por resolução portátil: `animar_titulo.py`, `render_mock.py` e `animate_mock.py` agora usam `video-design-system/` bundlado dentro da própria skill como default, com override via env var `EDITAR_VIDEO_DS_DIR` pra quem mantiver uma fonte externa
 - `orchestrator.py`: `PYTHON` (interpretador usado nos subprocess) trocado do venv hardcoded pra `sys.executable` (o mesmo interpretador rodando a skill), com override via `EDITAR_VIDEO_PYTHON`
 - Bundle de `video-design-system/styles/` (5 CSS, obrigatório — sem isso `animar_titulo.py` dava `sys.exit(1)`) dentro da skill. `ui-mocks/` e `assets/` NÃO foram bundlados (opcionais — `render_mock.py` cai em erro pedindo orientação, não placeholder, se faltar um template específico)
-- Suíte de testes: 154 passaram sem mudança; 4 que dependiam de templates específicos do `ui-mocks/` (canva-logo, fast-company, instagram-handle) só passam com `EDITAR_VIDEO_DS_DIR` setada — configurado no `~/.zshrc` do Luís, não é regressão
+- Suíte de testes: 154 passaram sem mudança; 4 que dependiam de templates específicos do `ui-mocks/` (canva-logo, fast-company, instagram-handle) só passam com `EDITAR_VIDEO_DS_DIR` setada — não é regressão
 - Motivo: preparar um mirror público (`github.com/luiscortex/editar-video-skill`) pra tutorial de instalação no hub iacortex.club — o repo de desenvolvimento (`luiscortex-editar-video`) continua privado
 
 **v2.2.1** (2026-05-18 noite) — Catálogo Visual sincronizado:
@@ -372,7 +357,7 @@ Quatro paths persistentes que a skill usa pra runtime + library cache. Library c
 - **Caption position DERIVADA do layout** — não é mais campo independente. Layouts `overlay-fullframe/middle/bottom` + `full-frame-puro` → caption TOP. `split-*` + `overlay-top-card` → caption BOTTOM safe zone
 - **3 regras novas cravadas (#18, #19, #20)** — layout per-insert / caption derivada / retro-compat
 - **Retro-compat v2.0/v2.1 garantida** — `workflow_state.json` ganha `schema_version`. Ausente OU `< 2.2` → modelo split-global antigo. Edições antigas continuam rodando sem migration manual
-- **Fonte do brainstorm**: `~/Documents/luiscortex/round1-poc/PLANO-INSERTS.md` (POC #2, layout per-insert já estava lá; só não tava cravado na skill)
+- **Origem**: um protótipo anterior já usava layout per-insert; só não tinha sido formalizado nesta skill ainda
 - **✅ Renderer overlay-card IMPLEMENTADO (2026-05-18 noite)** — `orchestrator._compose_master_with_splits` agora suporta `overlay-top/middle/bottom-card` via ffmpeg `geq` filter (rounded corners SDF + alpha mask) + `overlay-fullframe` (skip = talking head 100%) + aliases v2.1 (`fullframe`→`full-frame-puro`, `60/40`→`split-60-40`). Smoke test validado com fixtures sintéticas — card rounded 612×~344 sobre talking head 720×1280, posições middle (y=512) e bottom (y=870). **Pendente**: `propor_inserts.py` respeitar campo `layout` per-insert, `adicionar_legenda.py` derivar caption_position do layout, `workflow_state.json` cravar `schema_version: "2.2.0"`
 
 **v2.1.0** (2026-05-13) — fixes cravados da sessão smoke-test (11 erros → 11 fixes):
@@ -393,7 +378,7 @@ Quatro paths persistentes que a skill usa pra runtime + library cache. Library c
 - Detecção automática v1 vs v2 via `workflow_state.json`
 - Production Safety Net com 8 quality_gates automáticos
 - `desfaz` permite voltar até 3 gates consecutivos
-- Fonte da verdade do workflow: `~/Documents/luiscortex/copy-styles/_base/fluxo-edicao-video-2026.md`
+- Fluxo documentado neste mesmo arquivo (SKILL.md)
 
 **v1.0.0-MVP** (2026-05-10) — primeira versão funcional (pipeline linear 7 fases):
 - Sub-fluxo (a) talking head 9:16

@@ -6,7 +6,7 @@ e produz arquivo Markdown pronto pra copiar ao postar no IG.
 Estrutura do output (algoritmo-ig-2026.md):
   - Hook (1ª linha, ≤120 chars)
   - Story (3-5 parágrafos do transcript, ≤200 palavras)
-  - CTA tripla padrão @luiscortex
+  - CTA tripla com o handle configurado (--handle, style_config.json ou EDITAR_VIDEO_HANDLE)
   - Palavra-código DM (brand mais mencionada OU substantivo principal)
   - 3-5 hashtags dinâmicas (#IA + nicho + intenção, nunca lista fixa)
   - Alt-text acessibilidade
@@ -23,6 +23,7 @@ CLI:
 """
 import argparse
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -286,12 +287,12 @@ def _extract_palavra_codigo(text_lower: str, brands_ordered: list[str]) -> str:
     return "MANDA"
 
 
-def _build_alt_text(hook: str) -> str:
+def _build_alt_text(hook: str, handle: str) -> str:
     """Gera alt-text descritivo pra acessibilidade."""
     # Remove terminadores e sufixo '...'
     hook_clean = hook.rstrip(":?.").rstrip(".")
     hook_clean = hook_clean.replace("...", "").strip()
-    return f'"{hook_clean} — Luis Cortex (@luiscortex) explicando no Reels"'
+    return f'"{hook_clean} — {handle} explicando no Reels"'
 
 
 def _slug_from_hook(hook: str) -> str:
@@ -307,6 +308,7 @@ def gerar_caption(
     shot_list: dict | None,
     style_config: dict | None,
     estilo: str = "04-premium-cinematic",
+    handle: str | None = None,
 ) -> str:
     """Gera o conteúdo do caption-instagram.md.
 
@@ -323,6 +325,10 @@ def gerar_caption(
     combined = f"{full_text} {words_text}".strip()
     text_lower = combined.lower()
 
+    # Handle do Instagram pra CTA/alt-text: --handle > style_config.json > env var > placeholder genérico
+    if handle is None:
+        handle = (style_config or {}).get("handle") or os.environ.get("EDITAR_VIDEO_HANDLE") or "@seu_instagram"
+
     # Shot list (opcional)
     sl = shot_list or {}
     has_mascote = _detect_mascote(sl)
@@ -336,7 +342,7 @@ def gerar_caption(
     # Constrói seções
     hook = _build_hook(words, full_text)
     story = _build_story(words, duration_s, full_text)
-    alt_text = _build_alt_text(hook)
+    alt_text = _build_alt_text(hook, handle)
     slug = _slug_from_hook(hook)
 
     # Horário sugerido (regra do algoritmo-ig-2026.md)
@@ -359,7 +365,7 @@ def gerar_caption(
 —
 
 Salva esse pra não esquecer 💾
-Segue @luiscortex pra mais
+Segue {handle} pra mais
 Comenta "{palavra_codigo}" que eu te mando o prompt no DM 👇
 
 {hashtags_str}
@@ -395,6 +401,7 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--output", required=True, help="Caminho do caption-instagram.md")
     p.add_argument("--config", default=None, help="style_config.json (opcional)")
     p.add_argument("--estilo", default="04-premium-cinematic", help="Estilo fallback")
+    p.add_argument("--handle", default=None, help="Handle do Instagram pra CTA/alt-text (ex: @seuperfil)")
     args = p.parse_args(argv)
 
     transcript_path = Path(args.transcript)
@@ -427,6 +434,7 @@ def main(argv: list[str] | None = None) -> int:
         shot_list=shot_list,
         style_config=style_config,
         estilo=estilo,
+        handle=args.handle,
     )
 
     output_path = Path(args.output)

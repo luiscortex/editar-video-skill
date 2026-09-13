@@ -1,6 +1,6 @@
 """Lê estilo escolhido, gera style_config.json lido por todas as skills downstream.
 
-FIX P1 #10: também inicializa esqueleto ~/Documents/luiscortex/edicoes-styles/
+FIX P1 #10: também inicializa esqueleto edicoes-styles/ (relativo à pasta de trabalho)
 na primeira execução pra cumprir promessa do §10 da spec (sistema vivo de aprendizado).
 """
 import argparse
@@ -86,13 +86,13 @@ def init_edicoes_styles_skeleton() -> None:
     tom_global = base / "tom-visual-global.md"
     if not tom_global.exists():
         tom_global.write_text(
-            "# Tom Visual Global @luiscortex\n\n"
+            "# Tom Visual Global\n\n"
             "Regras CROSS-style (vale pra todos os 4 estilos):\n\n"
             "- Paleta: navy + Claude orange + cyan (acento técnico)\n"
             "- Fontes: Plus Jakarta Sans 800 + Instrument Serif italic + JetBrains Mono\n"
             "- NUNCA usar Inter/Roboto/Arial\n"
             "- Mascote Clawd: só em vídeo que mencione Claude. Max 1× por vídeo.\n"
-            "- Watermark @luiscortex discreto canto inferior\n",
+            "- Watermark com o seu handle (se você usar um), discreto no canto inferior\n",
             encoding="utf-8",
         )
 
@@ -100,7 +100,7 @@ def init_edicoes_styles_skeleton() -> None:
     if not proibicoes.exists():
         proibicoes.write_text(
             "# Proibições — Edição (cross-style)\n\n"
-            "- NUNCA escrever 'CEO' ao lado do handle (@luiscortex sozinho)\n"
+            "- NUNCA escrever cargo (ex: 'CEO') ao lado do handle — handle sozinho\n"
             "- NUNCA usar fonte Inter/Roboto/Arial\n"
             "- NUNCA mascote sem mencionar Claude\n",
             encoding="utf-8",

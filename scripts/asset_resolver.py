@@ -18,7 +18,7 @@ from scripts.asset_bank import AssetBank
 
 # ─── Constantes ───────────────────────────────────────────────────────────────
 
-PHOTOS_BASE_DIR = Path.home() / "Documents/luiscortex/luiscortex_project/assets/avatar-photos"
+PHOTOS_BASE_DIR = Path.home() / ".editar-video/avatar-photos"
 
 LOGOS_CACHE_DIR = Path.home() / "Library/Caches/editar-video/logos"
 
@@ -104,7 +104,7 @@ class AssetResolver:
         Cadeia de prioridade (6 níveis):
           1. inserts_manuais com prefixo da cena
           2. inserts_manuais livre (match por descricao)
-          3. banco_local (~/Documents/luiscortex/asset-bank/)
+          3. banco_local (~/.editar-video/asset-bank/)
           4. logos_simpleicons (se query menciona brand conhecida — vence fotos_user)
           5. fotos_user (~/.../avatar-photos/medium ou xlarge)
           6. needs_user_input (fallback)
@@ -153,7 +153,7 @@ class AssetResolver:
     # ─── nível 4 ──────────────────────────────────────────────────────────────
 
     def _resolve_fotos_user(self, q: str) -> dict | None:
-        """Retorna foto do @luiscortex se keyword bater, None caso contrário."""
+        """Retorna foto do usuário se keyword bater, None caso contrário."""
         words = set(q.split())
 
         # Detecta se é CTA para forçar xlarge (word-boundary match)

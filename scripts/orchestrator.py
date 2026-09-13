@@ -131,7 +131,7 @@ def _gen_placeholder_png(out_path: Path, label: str, width: int = 720, height: i
 # ─── Tabela de live URLs por subtipo ──────────────────────────────────────────
 # Fonte: regra cravada — mocks ui devem refletir o produto real sempre que possível.
 # Pra subtipos com template HTML local, deixa fora dessa tabela e o render_mock
-# usa o template (~/Documents/luiscortex/video-design-system/ui-mocks/<subtipo>/template.html).
+# usa o template (video-design-system/ui-mocks/<subtipo>/template.html, resolvido via EDITAR_VIDEO_DS_DIR).
 
 LIVE_URL_MAP: dict[str, str] = {
     "napkin-ai-home": "https://www.napkin.ai/",
